@@ -19,7 +19,7 @@ def find_two_digit(str_in:str)->int:
 
 
 if __name__ == "__main__":
-    file_path="./day-1/puzzle_input.txt"
+    file_path="./day_1/puzzle_input.txt"
     file = Path(file_path)
     if not file.exists():
         raise FileNotFoundError(f"Could not find puzzle input file at {file.as_posix()}")
