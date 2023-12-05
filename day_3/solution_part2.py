@@ -1,9 +1,10 @@
 from pathlib import Path
 from re import Match
-from solution_part1 import INDICATOR_SEARCH_PATTERN, MODEL_SEARCH_PATTERN, LineObject, get_match_bounding_box
+from solution_part1 import LineObject, get_match_bounding_box
 
 
 def merge_tracker(primary_tracker:dict[int,dict[int,list[int]]],update_to_tracker:dict[int,dict[int,list[int]]],focus_lines:set[int]=None):
+    """Provides a deep merge of the model number arrays"""
     out:dict[int,dict[int,list[int]]] = primary_tracker
     if focus_lines is None:
         focus_lines = (primary_tracker.keys() | update_to_tracker.keys())
@@ -46,7 +47,7 @@ if __name__ == "__main__":
                 line_buffer.pop(0)
             if len(line_buffer) ==3:
                 tmp = find_gearing_sums(line_buffer[1],line_buffer,max_line_length,line_number-2)
-                gear_tracker = merge_tracker(gear_tracker,tmp)
+                gear_tracker = merge_tracker(gear_tracker,tmp,focus_lines=range(line_number,line_number-3,-1))
             #First line
             elif len(line_buffer)==2:
                 tmp = find_gearing_sums(line_buffer[0],line_buffer,max_line_length)
@@ -54,7 +55,7 @@ if __name__ == "__main__":
 
         #last line
         tmp = find_gearing_sums(line_buffer[2],[line_buffer[1]],max_line_length,line_number-1)
-        gear_tracker = merge_tracker(gear_tracker,tmp)
+        gear_tracker = merge_tracker(gear_tracker,tmp,focus_lines=range(line_number,line_number-2,-1))
         print(gear_tracker)
         #  multiply and sum gearing
         running_sum = 0
