@@ -1,4 +1,4 @@
-from math import floor, ceil
+from math import floor, ceil, sqrt
 from solution_part1 import calc_distance, Race, exceeds_record
 from pathlib import Path
 import re
@@ -49,6 +49,13 @@ def binary_search(min_val, max_val, record_distance, race_time) -> int:
         return binary_search(min_val, test_val, record_distance, race_time)
 
 
+def quadratic_roots(record_distance: int, race_time: int) -> tuple[int, int]:
+    # Technically, this is the fastest and most appropriate way to solve. Morning brain fart led to binary search above
+    max_val = ceil((race_time + sqrt((race_time**2) - 4 * record_distance)) / 2)
+    min_val = floor((race_time - sqrt((race_time**2) - 4 * record_distance)) / 2)
+    return min_val, max_val
+
+
 if __name__ == "__main__":
     race = parse_input("./day_6/puzzle_input.txt")
     t_0 = local_max(race.time)
@@ -57,5 +64,7 @@ if __name__ == "__main__":
     print(f"Max time you could charge is {t_max}")
     t_delta = t_max - t_0
     t_min = t_0 - t_delta
+    alt_max, alt_min = quadratic_roots(race.distance, race.time)
+    print(f"quard roots:{alt_min} {alt_max}")
     print(f"Min time you could charge is {t_min}")
     print(2 * (t_max - t_0) + 1)
